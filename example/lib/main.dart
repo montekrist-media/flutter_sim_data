@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:device_region/device_region.dart';
+import 'package:flutter_sim_data_information/flutter_sim_data_information.dart';
 
 void main() {
   runApp(const MyApp());
