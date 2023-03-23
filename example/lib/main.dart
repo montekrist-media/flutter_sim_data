@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
 import 'package:device_region/device_region.dart';
 
 void main() {
@@ -15,34 +13,33 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _simRegion = 'Unknown';
-
-  Future<void> askForSIMCountryCode() async {
-    final result = await DeviceRegion.getSIMCountryCode();
-
-    setState(() => _simRegion = result ?? 'Can\'t receive country code');
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Device_region example app'),
+          title: const Text('Example app'),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: askForSIMCountryCode,
-                child: const Text('Get SIM country code'),
-              ),
-              const SizedBox(height: 15),
-              Text('Your SIM country code is: $_simRegion\n'),              
-            ],
-          ),
+        body: FutureBuilder<List<dynamic>?>(
+          future: DeviceRegion.getSIMDataInformation(),
+          builder:
+              (BuildContext context, AsyncSnapshot<List<dynamic>?> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else {
+                return Center(
+                  child: Text(
+                      'Country code: ${snapshot.data![0].toString().toUpperCase()}\nMobile operator: ${snapshot.data![1]}'),
+                );
+              }
+            }
+          },
         ),
       ),
     );
