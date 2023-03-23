@@ -27,8 +27,8 @@ class DeviceRegion {
   /// [3]: https://developer.apple.com/documentation/coretelephony/ctcarrier/1620317-isocountrycode
   /// 
 
-  static Future<String?> getSIMCountryCode() async =>
+  static Future<List<dynamic>?> getSIMDataInformation() async =>
       await _channel.invokeMethod(
-        'getSIMCountryCode',
+        'getSIMDataInformation',
       );
 }
