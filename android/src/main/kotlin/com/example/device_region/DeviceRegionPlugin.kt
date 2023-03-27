@@ -30,22 +30,13 @@ class DeviceRegionPlugin : FlutterPlugin, MethodCallHandler {
                 val simOperatorName = tm.simOperatorName
                 var simDataInformation: MutableList<String> = mutableListOf()
 
-                if (simCountry != null && simCountry.length == 2) { // SIM country code is available
+                if (simCountry != null && simCountry.length == 2 && simOperatorName != null) {
                     simDataInformation.add(simCountry)
-                    if (simOperatorName != null) {
-                        simDataInformation.add(simOperatorName)
-                    }
-                    result.success(simDataInformation)
-                } else if (tm.phoneType != TelephonyManager.PHONE_TYPE_CDMA) { // Device is not 3G (would be unreliable)
-                    val networkCountry = tm.networkCountryIso
+                    simDataInformation.add(simOperatorName)
 
-                    if (networkCountry != null && networkCountry.length == 2) { // network country code is available
-                        simDataInformation.add(networkCountry)
-                        if (simOperatorName != null) {
-                            simDataInformation.add(simOperatorName)
-                        }
-                        result.success(simDataInformation)
-                    }
+                    result.success(simDataInformation)
+                } else {
+                    result.success(simDataInformation)
                 }
             } catch (e: Exception) {
                 result.success(null)
