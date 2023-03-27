@@ -33,10 +33,15 @@ class _MyAppState extends State<MyApp> {
                   child: Text('Error: ${snapshot.error}'),
                 );
               } else {
-                return Center(
-                  child: Text(
-                      'Country code: ${snapshot.data![0].toString().toUpperCase()}\nMobile operator: ${snapshot.data![1]}'),
-                );
+                return snapshot.data!.isNotEmpty
+                    ? Center(
+                        child: Text(
+                            'Country code: ${snapshot.data![0].toString().toUpperCase()}\nMobile operator: ${snapshot.data![1]}'),
+                      )
+                    : const Center(
+                        child: Text(
+                            'No data available'),
+                      );
               }
             }
           },
